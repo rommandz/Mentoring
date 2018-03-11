@@ -1,131 +1,41 @@
-// Module
-const Module = (function () {
-  let count = 0;
-  
-  return {
-    increment() {
-      return count++;
-    },
-    decrement() {
-      return count--;
-    },
-    reset() {
-      count = 0;
-    }
-  }
-})();
+//Task 1
+let arrays = [[1, 2, 3], [4, 5], [6]];
 
-//Singleton
-const Singleton = (function () {
-  let instance;
+let flatenned = arrays.reduce((prev, current) => prev.concat(current), []);
+console.log(flatenned);
 
-  const initInstance = () => ({
-    name: 'Roman',
-    age: 23
-  });
-
-  return {
-    getInstance() {
-      if (!instance) {
-        instance = initInstance();  
-      }
-
-      return instance;
-    }
+//Task 2
+const loop = (value, test, update, body) => {
+  for (let i = value; test(i); i = update(i)) {
+    body(i);
   };
-})();
-
-//Facade
-const showSpinner = () => console.log('show spinner');
-const loadData = () => console.log('load data');
-const hideSpinner = () => console.log('hide spinner');
-const updateContent = () => console.log('update content');
-const setLog = () => console.log('set log');
-
-
-const Facade = {
-  update() {
-      showSpinner();
-      loadData();
-      hideSpinner();
-      updateContent();
-      setLog();
-  },
-  doSmthElse() {
-      // a lot of methods
-  }
 };
 
-//Decotator
-class Dinner {
-  constructor() {
-    this.secondDish = 'meat whith potatos';  
-  }
-  menu() { 
-    return 'meat whith potatos';
-  } 
-}
+loop(3, n => n > 0, n => n - 1, console.log);
 
-const salad = (dinner) => {
-  menu = dinner.menu();
-  dinner.menu = () => menu + ', cezar'; 
-}
-
-const beer = (dinner) => {
-  menu = dinner.menu();
-  dinner.menu = () => menu + ', Bud'; 
-}
-
-const dinner = new Dinner();
-salad(dinner);
-beer(dinner);
-
-//Factory
-class Car {
-  constructor() {
-      this.color = 'black';
-      this.doors = 4;
-  }
-  setColor(newColor) {
-      this.color = newColor;
-  }
-}
-
-class Sedan extends Car {
-  constructor() {
-      super();
-      this.doors = 4;
-  }
-}
-class Coupe extends Car {
-  constructor() {
-      super();
-      this.doors = 2;
-  }
-}
-
-class CarFactory {
-
-  createCar(settings) {
-    let car;
-
-    switch(settings.type) {
-      case 'sedan':
-        car = new Sedan();
-        break;
-      case 'coupe':
-        car = new Coupe();
-        break;
-      default:
-        car = new Car();
-        break;  
+//Task 3
+const every = (array, test) => {
+  for (let i = 0; i < array.length; i++) {
+    if (!test(array[i])) {
+      return false;
     }
-    car.setColor(settings.color);
+  };
+  
+  return true;
+};
 
-    return car;
-  }
-}
+const everyBasedOnSome = (array, test) => !array.some(el => !test(el));
 
-const carFactory = new CarFactory();
-const firstCar = carFactory.createCar({type: 'sedan', color: 'blue'});
-const secondCar = carFactory.createCar({type: 'coupe', color: 'red'});
+console.log(every([1, 3, 5], n => n < 10));
+// → true
+console.log(every([2, 4, 16], n => n < 10));
+// → false
+console.log(every([], n => n < 10));
+// → true
+
+console.log(everyBasedOnSome([1, 3, 5], n => n < 10));
+// → true
+console.log(everyBasedOnSome([2, 4, 16], n => n < 10));
+// → false
+console.log(everyBasedOnSome([], n => n < 10));
+// → true
